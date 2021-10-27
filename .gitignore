@@ -7,3 +7,8 @@ target/
 .*.swo
 pom.xml
 profiles.clj
+
+.clj-kondo/
+.lsp/
+.DS_Store
+.calva/
