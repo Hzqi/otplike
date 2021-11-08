@@ -12,3 +12,4 @@ profiles.clj
 .lsp/
 .DS_Store
 .calva/
+playground.clj
