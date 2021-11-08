@@ -5,6 +5,7 @@
             [clojure.core.match :refer [match]]
             [clojure.spec.alpha :as spec]
             [otplike.util :as u]
+            [otplike.proc-util :as pu]
             [otplike.process :as process :refer [!]]))
 
 (when (and (= 1 (:major *clojure-version*))
@@ -357,6 +358,20 @@
    `(start!
      ~server ~args (assoc-in ~options [:spawn-opt :register] ~reg-name))))
 
+(defmacro start!!
+  "The same as `start!` but returns sync value."
+  ([server]
+   `(start!! ~server [] {}))
+  ([server args]
+   `(start!! ~server ~args {}))
+  ([server args options]
+   `(pu/execute-proc!! 
+     (process/await! 
+      (start ~server ~args ~options))))
+  ([reg-name server args options]
+   `(start!!
+     ~server ~args (assoc-in ~options [:spawn-opt :register] ~reg-name))))
+
 (defn start-link
   "The same as `start-link!` but returns async value."
   ([server]
@@ -378,6 +393,18 @@
    `(start! ~server ~args (assoc-in ~options [:spawn-opt :link] true)))
   ([reg-name server args options]
    `(start-link!
+     ~server ~args (assoc-in ~options [:spawn-opt :register] ~reg-name))))
+
+(defmacro start-link!!
+  "The same as `start!!` but atomically links caller to started process."
+  ([server]
+   `(start-link!! ~server [] {}))
+  ([server args]
+   `(start-link!! ~server ~args {}))
+  ([server args options]
+   `(start!! ~server ~args (assoc-in ~options [:spawn-opt :link] true)))
+  ([reg-name server args options]
+   `(start-link!!
      ~server ~args (assoc-in ~options [:spawn-opt :register] ~reg-name))))
 
 (defmacro start-ns
@@ -468,6 +495,15 @@
   ([server request timeout-ms]
    (call* server request timeout-ms [server request timeout-ms])))
 
+(defmacro call!!
+  "The same as `call!` but returns sync value."
+  ([server request]
+   `(pu/execute-proc!!
+     (call! ~server ~request)))
+  ([server request timeout-ms]
+   `(pu/execute-proc!!
+     (call! ~server ~request ~timeout-ms))))
+
 (defn cast
   "Sends an asynchronous request to the `server` and returns immediately,
   ignoring if the `server` process does not exist. The `handle-cast`
@@ -494,3 +530,6 @@
 
 (defmacro ^:no-doc get! [server]
   `(call! ~server ::get-state))
+
+(defmacro get!! [server]
+  `(call!! ~server ::get-state))
