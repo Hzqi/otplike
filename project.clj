@@ -1,9 +1,9 @@
 (def project-version "0.6.1-alpha-SNAPSHOT")
 
 (defproject
-  otplike/otplike project-version
+  org.clojars.hzqi_110/otplike project-version
   :description "Erlang/OTP like processes and behaviours on top of core.async"
-  :url "https://github.com/suprematic/otplike"
+  :url "https://github.com/Hzqi/otplike"
   :license {:name "Eclipse Public License - v1.0"
             :url  "https://www.eclipse.org/legal/epl-v10.html"}
 
@@ -12,9 +12,6 @@
                  [org.clojure/core.match "0.3.0-alpha5"]
                  [org.clojure/data.int-map "0.2.4"]
                  [clojure-future-spec "1.9.0-beta4"]]
-
-  :plugins [[lein-codox "0.10.3"]
-            [lein-eftest "0.5.8"]]
 
   :source-paths  ["src"]
 
@@ -52,14 +49,6 @@
              {:dependencies [[org.clojure/math.combinatorics "0.1.4"]
                              [eftest "0.5.2"]]
               :source-paths  ["src" "examples"]}}
-
-  :codox
-  {:source-paths ["src"]
-   :source-uri
-   "https://github.com/suprematic/otplike/blob/{version}/{filepath}#L{line}"
-   :output-path ~(str "docs/" project-version)
-   :namespaces [#"^(?!otplike.spec-util)"]
-   :metadata {:doc/format :markdown}}
 
   :test-selectors {:parallel :parallel
                    :serial :serial
