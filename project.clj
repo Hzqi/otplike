@@ -1,4 +1,4 @@
-(def project-version "0.6.1-alpha-SNAPSHOT")
+(def project-version "0.6.1-alpha")
 
 (defproject
   org.clojars.hzqi_110/otplike project-version

@@ -13,3 +13,5 @@ profiles.clj
 .DS_Store
 .calva/
 playground.clj
+.cpcache
+._*
